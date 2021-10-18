@@ -27,7 +27,7 @@ int main()
 void NumberGenerator()
 {
 	int number = rand() % 100 + 1;
-
+	int guess_attempts = 1;
 	cout << "Alright. Ok I have my number. 20 guesses. You can now GO GO GO.\n\n";
 
 	do
@@ -40,10 +40,7 @@ void NumberGenerator()
 		if (number == number_guess)
 		{
 			srand(time(0));
-			for (int i = 1; i <= 3; i++)
-			{
-				comO = rand() % 1;
-			}
+			comO = rand() % 1;
 			{
 				if (comO = 1)
 				{
@@ -63,10 +60,8 @@ void NumberGenerator()
 		}
 		else if (number >= number_guess)
 		{
-			for (int i = 1; i <= 3; i++)
-			{
-				comO = rand() % 1;
-			}
+			srand(time(0));
+			comO = rand() % 1;
 			{
 				if (comO = 1)
 				{
@@ -85,10 +80,8 @@ void NumberGenerator()
 		}
 		else if (number <= number_guess)
 		{
-			for (int i = 1; i <= 3; i++)
-			{
-				comO = rand() % 1;
-			}
+			srand(time(0));
+			comO = rand() % 1;
 			{
 				if (comO = 1)
 				{
@@ -105,9 +98,10 @@ void NumberGenerator()
 				continue;
 			}
 		}
-		else if (number > number_guess)
+		else if (guess_attempts <= 20)
 		{
 			cout << "You loose. You loose. You loose. hehehehehehe. That means I win. Till we play again freind.\n\n";
 		}
-	} while (number_guess <= 20);
+		guess_attempts++;
+	} while (guess_attempts <= 20);
 }
