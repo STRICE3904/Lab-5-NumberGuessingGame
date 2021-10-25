@@ -20,62 +20,77 @@ using namespace std; //Makes the writting of the code smoother
 void intrduction();
 //Precondition: Fuction should take the empty value of the number variable
 //Post condition: Fuction should change the number variable to any random number between 0 and 100
-void NumberGenerator(); 
-//Precondition: Takes the inputed awnser to check to see if it matches the number
+void NumberGenerator(float& number); 
+//Precondition: Takes the inputed answer to check to see if it matches the number
 //Postcondition: Outputs a text saying higher, lower, or good job
-void awnser_gennerator();
-//Precondition: Takes the old awnser or the empty awnser and changes it
-//Postcondition: Outputes the new inputed awnser
-void awnser_check();
-//Variables that need to be used globaly by multiple functions and the main
-float number;
-float number_guess = 1;
-int x = 1;
+void answer_gennerator(float number, float number_guess, int x, float& win, float& loss);
+//Precondition: Takes the old answer or the empty answer and changes it
+//Postcondition: Outputes the new inputed answer
+void answer_check(float& number_guess);
+
+void play_again(bool& yn);
+
+void sw_statement(float number, float number_guess, int x, bool& run);
+
 
 int main()
 {
-	intrduction();//Starts the prosses
-	NumberGenerator();//Finds a number
-	awnser_check();//Promts the usser for an awnser
-	while (x < 20)//While the awnser attempts are below 21 it will run. 
+	bool yn = true;
+	float number = 1;
+	float number_guess = 1;
+	int x = 1;
+	float win = 0;
+	float loss = 0;
+	do
 	{
-		awnser_gennerator();
-		if (number == number_guess)
+		intrduction();//Starts the prosses
+		NumberGenerator(number);//Finds a number
+		answer_check(number_guess);//Promts the usser for an answer
+		bool run = true;
+		do//While the answer attempts are below 21 it will run. 
 		{
-			return 1;
-		}
-		awnser_check();
-		x++;
-	}
+			answer_gennerator(number, number_guess, x, win, loss);
+			if (number == number_guess)
+			{
+				sw_statement(number, number_guess, x, run);
+			}
+			else if (x > 20)
+			{
+				sw_statement(number, number_guess, x, run);
+			}
+			else if (number != number_guess || x<=x)
+			{
+				answer_check(number_guess);
+				x++;
+			}
+
+		} while (run);
+		play_again(yn);
+	} while (yn);
+	cout << "Total wins = " << win << " and total losses = " << loss << endl;
 	return 0;
 }
 
+
 void intrduction()
 {
-	int awnser;
-	cout << "Lets play a game!!\n\n\n";
-	cout << "Number between 1 and 100!!! 20 guesses GO GO GO!!!!!\n\n\n";
-	cout << "your awnser: ";
-	cin >> awnser;
-	if (awnser >= 100 || awnser <= 100 && awnser >= 1 || awnser <= 1)
-	{
-		cout << "WAIT. I havent chosen a number yet. Be patient.\n\n";
-	}
+	cout << "Lets play a game!! Guess my number. 0 to 100.\n\n\n";
 }
-void NumberGenerator()
+
+void NumberGenerator(float& number)
 {
 	srand((unsigned)time(0));
 	number = 1 + (rand() % 100);
-	cout << "Alright. Ok I have my number. 20 guesses. You can now GO GO GO.\n\n";
+	cout << "Alright. Ok I have my number. 20 guesses. Now GO GO GO.\n\n";
 }
 
-void awnser_check()
+void answer_check(float& number_guess)
 {
 	cout << "your guess: ";
 	cin >> number_guess;
 }
 
-void awnser_gennerator()
+void answer_gennerator(float number, float number_guess, int x, float& win, float& loss)
 {
 	if (number == number_guess)
 	{
@@ -93,6 +108,7 @@ void awnser_gennerator()
 			cout << "YAY you are sooo good\n\n";
 			break;
 		}
+		win++;
 
 	}
 	else if (number >= number_guess)
@@ -130,8 +146,43 @@ void awnser_gennerator()
 			break;
 		}
 	}
-	else if (x <= 21)
+	else if (x >= 21)
 	{
 		cout << "You loose. You loose. You loose. hehehehehehe. That means I win. Till we play again freind.\n\n";
+		loss++;
 	}
+}
+
+void play_again(bool& yn)
+{
+	int yn_input;
+	cout << "Would you like to play again? Enter 1 for yes and 2 for no: ";
+	cin >> yn_input;
+
+	switch (yn_input)
+	{
+	case 1:	yn = true;
+		break;
+
+	case 2:	yn = false;
+		break;
+
+	default: cout << "Input error! Exiting program.\n\n";
+		yn = false;
+		break;
+	}
+}
+
+void sw_statement(float number, float number_guess, int x, bool& run)
+{
+	if (number == number_guess)
+	{
+		run = false;
+	}
+	else if (x > 20)
+	{
+		run = false;
+	}
+	else
+		run = true;
 }
