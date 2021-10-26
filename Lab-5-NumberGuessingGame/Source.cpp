@@ -1,8 +1,8 @@
 /*Samuel Trice
 * C++ 2021
-* 
+* Oct 27. 2021
 * Lab 5
-* Randomizing a number and guessing with different responses each time
+* Randomizing a number and guessing with different responses each time. Then asking if they want to play again and displaying the score
 */
 
 #include <iostream>
@@ -19,7 +19,7 @@ using namespace std; //Makes the writting of the code smoother
 //Postcondition: Outputs the prompt that starts the prosses
 void intrduction();
 //Precondition: Fuction should take the empty value of the number variable
-//Post condition: Fuction should change the number variable to any random number between 0 and 100
+//Postcondition: Fuction should change the number variable to any random number between 0 and 100
 void NumberGenerator(float& number); 
 //Precondition: Takes the inputed answer to check to see if it matches the number
 //Postcondition: Outputs a text saying higher, lower, or good job
@@ -27,9 +27,11 @@ void answer_gennerator(float number, float number_guess, int x, float& win, floa
 //Precondition: Takes the old answer or the empty answer and changes it
 //Postcondition: Outputes the new inputed answer
 void answer_check(float& number_guess);
-
+//Precondition: After the game runs it sends you to ask if you want to play again
+//Postcondition: Asks yes or no and sets yn to true or false. 
 void play_again(bool& yn);
-
+//Precondition: Gets called if either the numbers matched or the guesses are out
+//Postcondition: Sets run to false and ends the loop
 void sw_statement(float number, float number_guess, int x, bool& run);
 
 
@@ -49,52 +51,52 @@ int main()
 		bool run = true;
 		do//While the answer attempts are below 21 it will run. 
 		{
-			answer_gennerator(number, number_guess, x, win, loss);
-			if (number == number_guess)
+			answer_gennerator(number, number_guess, x, win, loss);//Calls the function for the text output. 
+			if (number == number_guess)//If the numbers equal it calls the switch function
 			{
-				sw_statement(number, number_guess, x, run);
+				sw_statement(number, number_guess, x, run);//switch function
 			}
-			else if (x > 20)
+			else if (x > 20)//If the guesses are out it calls the switch function
 			{
-				sw_statement(number, number_guess, x, run);
+				sw_statement(number, number_guess, x, run);//switch function
 			}
-			else if (number != number_guess || x<=x)
+			else if (number != number_guess || x<=x)//If the number is not correct and there are still guesses left it calls the input function again
 			{
-				answer_check(number_guess);
-				x++;
+				answer_check(number_guess);//Input function
+				x++;//Adds to the number of guesses. 
 			}
 
-		} while (run);
-		play_again(yn);
-	} while (yn);
-	cout << "Total wins = " << win << " and total losses = " << loss << endl;
+		} while (run);//When run = false the loops ends. 
+		play_again(yn);//Play again function call. 
+	} while (yn);//When yn=false the loop ends. 
+	cout << "Total wins = " << win << " and total losses = " << loss << endl; //Total number of wins and losses output. 
 	return 0;
 }
 
 
-void intrduction()
+void intrduction()//Added this function to keep main looking cleaner
 {
 	cout << "Lets play a game!! Guess my number. 0 to 100.\n\n\n";
 }
 
-void NumberGenerator(float& number)
+void NumberGenerator(float& number)//Function for the number guessed. Gets called every new game
 {
 	srand((unsigned)time(0));
 	number = 1 + (rand() % 100);
 	cout << "Alright. Ok I have my number. 20 guesses. Now GO GO GO.\n\n";
 }
 
-void answer_check(float& number_guess)
+void answer_check(float& number_guess)//Fuction for the number guess. Gets called every time the player guesses
 {
 	cout << "your guess: ";
 	cin >> number_guess;
 }
 
-void answer_gennerator(float number, float number_guess, int x, float& win, float& loss)
+void answer_gennerator(float number, float number_guess, int x, float& win, float& loss)//Function that allows the bot to reply different ways
 {
-	if (number == number_guess)
+	if (number == number_guess)//These are the awnsers for if the awnser is right
 	{
-		srand((unsigned)time(0));
+		srand((unsigned)time(0));//Usses another random number to pick between 1 and 3. 
 		int result = 1 + (rand() % 3);
 		switch (result)
 		{
@@ -108,11 +110,12 @@ void answer_gennerator(float number, float number_guess, int x, float& win, floa
 			cout << "YAY you are sooo good\n\n";
 			break;
 		}
-		win++;
+		win++;//Adds a point to win for the output at the end
 
 	}
-	else if (number >= number_guess)
+	else if (number >= number_guess)//These are the awnsers for when the number is low. 
 	{
+		//Exact same number system as the first one except no win is added
 		srand((unsigned)time(0));
 		int result = 1 + (rand() % 3);
 		switch (result)
@@ -129,7 +132,8 @@ void answer_gennerator(float number, float number_guess, int x, float& win, floa
 		}
 
 	}
-	else if (number <= number_guess)
+	else if (number <= number_guess)//These are the awnsers for when the number is high
+		//Exact same number system as the last one
 	{
 		srand((unsigned)time(0));
 		int result = 1 + (rand() % 3);
@@ -146,19 +150,21 @@ void answer_gennerator(float number, float number_guess, int x, float& win, floa
 			break;
 		}
 	}
-	else if (x >= 21)
+	else if (x >= 21)//If the guesses have ran out it says you loose 
 	{
 		cout << "You loose. You loose. You loose. hehehehehehe. That means I win. Till we play again freind.\n\n";
-		loss++;
+		loss++;//Adds a point to losses
 	}
 }
 
-void play_again(bool& yn)
+void play_again(bool& yn)//This is the switch for the play again. 
 {
 	int yn_input;
+	//prompts a yes or no if they would like to play again
 	cout << "Would you like to play again? Enter 1 for yes and 2 for no: ";
 	cin >> yn_input;
 
+	//yes it stays true and restarts the loop. no it becomes false and ends the loop. If neither is entered correctly it sets automaticaly to false
 	switch (yn_input)
 	{
 	case 1:	yn = true;
@@ -173,16 +179,17 @@ void play_again(bool& yn)
 	}
 }
 
-void sw_statement(float number, float number_guess, int x, bool& run)
+//switch statement for the number game. This gets called when the player wins or looses. If it gets called any other reason it stays true and keeps the loop going.
+void sw_statement(float number, float number_guess, int x, bool& run)  
 {
-	if (number == number_guess)
+	if (number == number_guess)//If the number matches the guess it ends the loop
 	{
 		run = false;
 	}
-	else if (x > 20)
+	else if (x > 20)//If the guess attemts run out it ends the loop
 	{
 		run = false;
 	}
-	else
+	else//If nothing has happened to end the game it just keeps going. 
 		run = true;
 }
